@@ -9,109 +9,54 @@ import { AddBinsScreen } from './src/screens/location/add/AddBinsScreen';
 import { SelectBinColourScreen } from './src/screens/location/add/SelectBinColourScreen';
 import { SelectBinScheduleScreen } from './src/screens/location/add/SelectBinScheduleScreen';
 import { Box, NativeBaseProvider } from 'native-base';
-import * as AuthSession from "expo-auth-session";
-import jwtDecode from "jwt-decode";
-import * as WebBrowser from 'expo-web-browser';
-
-WebBrowser.maybeCompleteAuthSession();
+import { useAuthentication } from './src/hooks/useAuthentication';
+import { LoginScreen } from './src/screens/LoginScreen';
+import { AuthenticationContext } from './src/providers/AuthenticationProvider';
 
 const Stack = createNativeStackNavigator();
 
-const auth0ClientId = "My3U7DhnHSn08euQfWl6UCgQaftcK0ng";
-const authorizationEndpoint = "https://dev-ver23ej7ohjledpv.us.auth0.com/authorize";
-
-const useProxy = Platform.select({ web: false, default: true });
-const redirectUri = AuthSession.makeRedirectUri({ useProxy });
-
 export default function App() {
-  const [name, setName] = useState(null);
-  const [token, setToken] = useState<any>();
-  
-  const [request, result, promptAsync] = AuthSession.useAuthRequest(
-    {
-      redirectUri,
-      clientId: auth0ClientId,
-      // id_token will return a JWT token
-      responseType: "id_token",
-      // retrieve the user's profile
-      scopes: ["openid", "profile"],
-      extraParams: {
-        // ideally, this will be a random value
-        nonce: "nonce",
-      },
-    },
-    { authorizationEndpoint }
-  );
+  const auth = useAuthentication();
 
-    // Retrieve the redirect URL, add this to the callback URL list
-  // of your Auth0 application.
-  console.log(`Redirect URL: ${redirectUri}`);
-
-  useEffect(() => {
-    if (result) {
-      if (result.type === "error") {
-        Alert.alert(
-          "Authentication error",
-          result.params.error_description || "something went wrong"
-        );
-        return;
-      }
-      if (result.type === "success") {
-        // Retrieve the JWT token and decode it
-        const jwtToken = result.params.id_token;
-        const decoded = jwtDecode(jwtToken);
-
-        console.log(decoded)
-
-        const { name } = decoded as any;
-        setName(name);
-      }
-    }
-  }, [result]);
+  // console.log(auth)
+  (auth as any)["blah"] = "wtf"
 
   return (
-    <NativeBaseProvider>
-      <NavigationContainer>
-        <Stack.Navigator>
-            <Stack.Screen
-              name="Home"
-              component={HomeScreen}
-              options={{ title: 'Bin Day' }}
-            />
-
-
-            <Stack.Group>
-              {/* <Stack.Screen name="AddLocation" component={AddLocationScreen} /> */}
+    <AuthenticationContext.Provider value={auth}>
+      <NativeBaseProvider>
+        <NavigationContainer>
+          <Stack.Navigator>
+            {auth.isAuthenticated && (<>
               <Stack.Screen
-                name="AddLocation"
-                component={SelectAddressScreen}
-                options={{ title: 'Select Address' }}
+                name="Home"
+                component={HomeScreen}
+                options={{ title: 'Bin Day' }}
               />
-              <Stack.Screen name="AddBins" component={AddBinsScreen} options={{ title: "Add Bins" }} />
-              <Stack.Screen name="SelectBinColour" component={SelectBinColourScreen} options={{ title: "Bin Colour" }} />
-              <Stack.Screen name="SelectBinSchedule" component={SelectBinScheduleScreen} options={{ title: "Bin Schedule" }} />
-            </Stack.Group>
-        </Stack.Navigator>
 
-      </NavigationContainer>
-      <StatusBar style="auto" />
+              <Stack.Group>
+                {/* <Stack.Screen name="AddLocation" component={AddLocationScreen} /> */}
+                <Stack.Screen
+                  name="AddLocation"
+                  component={SelectAddressScreen}
+                  options={{ title: 'Select Address' }}
+                />
+                <Stack.Screen name="AddBins" component={AddBinsScreen} options={{ title: "Add Bins" }} />
+                <Stack.Screen name="SelectBinColour" component={SelectBinColourScreen} options={{ title: "Bin Colour" }} />
+                <Stack.Screen name="SelectBinSchedule" component={SelectBinScheduleScreen} options={{ title: "Bin Schedule" }} />
+              </Stack.Group>
+            </>)}
 
-      <Text>This is the token: {name}, {token && JSON.parse(token)}</Text>
+            {!auth.isAuthenticated && <Stack.Screen
+              name="Login"
+              component={LoginScreen}
+              options={{ title: 'Bin Day' }}
+            />}
+          </Stack.Navigator>
 
-      {name ? (
-        <>
-          <Text>You are logged in, {name}!</Text>
-          <Button title="Log out" onPress={() => setName(null)} />
-        </>
-      ) : (
-        <Button
-          disabled={!request}
-          title="Log in with Auth0"
-          onPress={() => promptAsync({ useProxy })}
-        />
-      )}
-    </NativeBaseProvider>
-
+        </NavigationContainer>
+        <StatusBar style="auto" />
+      </NativeBaseProvider>
+    </AuthenticationContext.Provider>
   );
 
 

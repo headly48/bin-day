@@ -3,6 +3,7 @@ import { GooglePlaceDetail, GooglePlacesAutocomplete } from 'react-native-google
 import * as Location from "expo-location";
 import { SafeAreaView, Text } from 'react-native';
 import { AddressDetails } from "./AddressLookup.types";
+import { useAuthenticationContext } from "../../providers/AuthenticationProvider";
 
 const AddressLookup: React.FC<{
     handleError: () => void,
@@ -12,17 +13,42 @@ const AddressLookup: React.FC<{
     handleSelect,
 }) => {
 
+    const authContext = useAuthenticationContext();
+
     const [addressState, setAddressState] = useState<{
       loading: boolean,
-      country: undefined | null | string
+      country: undefined | null | string,
     }>({
       loading: true,
-      country: undefined
+      country: undefined,
     })
+
+    const [authToken, setAuthToken] = useState<string>();
   
     useEffect(() => {
       Location.installWebGeolocationPolyfill();
     }, [])
+
+    useEffect(() => {
+      const timer = setInterval(function x() {
+        (async () => {
+          if(authContext) {
+            const authToken = await authContext?.getAccessToken();
+            if(authToken) {
+              setAuthToken(authToken)
+            }
+          }
+        })();
+
+        return x;
+      }(), 600000);
+
+      return () => {
+        if(timer) {
+          clearInterval(timer)
+        }
+      }
+    }, [authContext])
   
     useEffect(() => {
       (async () => {
@@ -92,11 +118,14 @@ const AddressLookup: React.FC<{
           query={{
             key: 'TODO: REPLACE WITH ENV',
             language: 'en',
-            components: addressState.country ? 'country:us' : undefined
+            components: addressState.country ? `country:${addressState.country}` : undefined,
           }}
           requestUrl={{
             url: "http://192.168.1.126:18000/maps/api",
-            useOnPlatform: "all"
+            useOnPlatform: "all",
+            headers: {
+              Authorization: `Bearer ${authToken}`
+            }
           }}
           onFail={
             (err) => {
