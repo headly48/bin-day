@@ -1,5 +1,4 @@
 import Koa, { BaseContext, ParameterizedContext } from "koa";
-import jwt from "koa-jwt";
 import bodyParser from "koa-bodyparser";
 import helmet from "koa-helmet";
 import cors from "@koa/cors";
@@ -14,6 +13,12 @@ import { protectedRouter } from "./protectedRoutes";
 import { cron } from "./cron";
 import { Db, MongoClient } from "mongodb";
 import { loadData } from "./data/data-loader";
+
+import {default as passport } from 'koa-passport';
+import {default as PassportLocal} from 'passport-local';
+
+import {Strategy as JWTStrategy, ExtractJwt } from "passport-jwt";
+
 
 const connectionOptions: ConnectionOptions = {
   type: "postgres",
@@ -76,11 +81,59 @@ createConnection(connectionOptions)
     // these routes are NOT protected by the JWT middleware, also include middleware to respond with "Method Not Allowed - 405".
     app.use(unprotectedRouter.routes()).use(unprotectedRouter.allowedMethods());
 
+    app.use(passport.initialize());
+
+    passport.use(new PassportLocal.Strategy({
+    },
+      async function (email, password, cb) {
+
+        winston.log("info", `Finding user`, email, password);
+        const collection = app.context.appContext.mongo.db.collection("users");
+
+        try {
+          const record = await collection.findOne({
+            username: email
+          })
+
+          if (!record) {
+            return cb(null, false, { message: 'Incorrect email or password.' });
+          }
+          return cb(null, record, { message: 'Logged In Successfully' });
+        } catch (e) {
+          console.log("CATCH")
+          cb(e)
+        }
+      }
+    ));
+
+    passport.use(new JWTStrategy({
+        jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+        secretOrKey   : 'your_jwt_secret'
+    },
+    async function (jwtPayload, cb) {
+      console.log("JWT STRAT")
+      const collection = app.context.mongo.db.collection("users");
+
+      const record = await collection.findOne({
+        username: jwtPayload.username
+      })
+
+      if(record) {
+        cb(null, record);
+      } else {
+        cb(new Error("User does not exist"));
+      }
+    }
+  ));
+
+
+
+
     // JWT middleware -> below this line routes are only reached if JWT token is valid, secret as env variable
     // do not protect swagger-json and swagger-html endpoints
-    app.use(
-      jwt({ secret: config.jwtSecret }).unless({ path: [/^\/swagger-/] })
-    );
+    // app.use(
+    //   jwt({ secret: config.jwtSecret }).unless({ path: [/^\/swagger-/] })
+    // );
 
     // These routes are protected by the JWT middleware, also include middleware to respond with "Method Not Allowed - 405".
     app.use(protectedRouter.routes()).use(protectedRouter.allowedMethods());

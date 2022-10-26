@@ -1,7 +1,17 @@
+import { Passport } from "koa-passport";
 import { SwaggerRouter } from "koa-swagger-decorator";
 import { user, lga } from "./controller";
+import {default as passport } from 'koa-passport';
 
 const protectedRouter = new SwaggerRouter();
+
+protectedRouter.get("/test1", (ctx) => {
+  ctx.body = "unauthenticated route successful";
+})
+
+protectedRouter.get("/test", passport.authenticate("jwt", { session: false }), (ctx) => {
+  ctx.body = "authenticated route successful";
+})
 
 // USER ROUTES
 protectedRouter.get("/users", user.getUsers);

@@ -25,14 +25,14 @@ export default class LGAController {
 
     const results = collection.find({
 
-        <location field>: {
-            $geoWithin: {
-               $geometry: {
-                  type: <"Polygon" or "MultiPolygon"> ,
-                  coordinates: [ <coordinates> ]
-               }
-            }
-         }
+        // <location field>: {
+        //     $geoWithin: {
+        //        $geometry: {
+        //           type: <"Polygon" or "MultiPolygon"> ,
+        //           coordinates: [ <coordinates> ]
+        //        }
+        //     }
+        //  }
     });
 
     ctx.body = await results.toArray();
