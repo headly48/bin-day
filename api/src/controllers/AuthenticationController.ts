@@ -1,17 +1,13 @@
 import { BaseContext } from "koa";
 import { description, request, summary, tagsAll } from "koa-swagger-decorator";
-import {default as passport } from 'koa-passport';
+import { default as passport } from 'koa-passport';
 import { RouterContext } from "@koa/router";
 import { ServerContext } from "../server";
 import winston from "winston";
 const jwt = require('jsonwebtoken');
 
-@tagsAll(["Auth"])
 export default class AuthController {
 
-    @request("post", "/auth/register")
-    @summary("Register user")
-    @description("A simple welcome message to verify the service is up and running.")
     public static async register(ctx: RouterContext<any, ServerContext>): Promise<void> {
 
         const collection = ctx.appContext.mongo.db.collection("users");
@@ -45,14 +41,14 @@ export default class AuthController {
         await collection.insertOne({ username, password, name })
 
         // const user = await queries.addUser(ctx.request.body);
-        
+
 
         // passport.authenticate("local", {session: false}, (error, user, info) => {
 
 
         // })
 
-    
+
         // passport.authenticate('local',
         //     {
         //         session: false
@@ -70,34 +66,22 @@ export default class AuthController {
 
     }
 
-    @request("post", "/auth/login")
-    @summary("Register user")
-    @description("A simple welcome message to verify the service is up and running.")
-    public static async login(ctx: BaseContext): Promise<void> {
-        winston.log("info", `Login`, ctx.body);
-        
-        passport.authenticate('local', {session: false}, async (err, user, info) => {
-            winston.log("info", `Login inside`, user, info);
-            if (err || !user) {
+    public static async loginUser(ctx: BaseContext): Promise<void> {
+
+        return passport.authenticate('local', async (err, user, info) => {
+            winston.log("info", `Logging in use6r`, user, info);
+
+            if (user) {
+                winston.log("info", `inside`);
+                await (ctx as any).login(user);
+
+                // winston.log("info", `inside2`, test);
+                ctx.status = 200;
+                // ctx.body = 'accepted';
+            } else {
                 ctx.status = 400;
-                ctx.body = {
-                    message: 'Something is not right',
-                    user   : user
-                }
+                ctx.body = { status: 'error' };
             }
-
-            // winston.log("info", ctx);
-
-            await (ctx as any).login(user, {session: false}, (err: any) => {
-               winston.log("info", `passport login`);
-               if (err) {
-                   ctx.status = 400;
-               }
-
-               // generate a signed son web token with the contents of user object and return it in the response
-               const token = jwt.sign(user, 'your_jwt_secret');
-               ctx.body = {user, token};
-            });
-        })(ctx as any, undefined);
+        })(ctx as any, null);
     }
 }

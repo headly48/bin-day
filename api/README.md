@@ -4,6 +4,13 @@ tesrt
 LocalStrategy with JwtStrategy
   https://medium.com/front-end-weekly/learn-using-jwt-with-passport-authentication-9761539c4314
 
+Koa with session + redis
+  https://mherman.org/blog/user-authentication-with-passport-and-koa/
+
+
+
+
+
 
 
 
