@@ -1,16 +1,12 @@
 import { BaseContext } from "koa";
-import { description, request, summary, tagsAll } from "koa-swagger-decorator";
 import { default as passport } from 'koa-passport';
 import { RouterContext } from "@koa/router";
 import { ServerContext } from "../server";
 import winston from "winston";
-const jwt = require('jsonwebtoken');
 
-export default class AuthController {
+export default class AuthenticationController {
 
     public static async register(ctx: RouterContext<any, ServerContext>): Promise<void> {
-
-        const collection = ctx.appContext.mongo.db.collection("users");
 
         const { username, password, name } = ctx.request.body;
 
@@ -24,46 +20,38 @@ export default class AuthController {
             return;
         }
 
-        const record = await collection.findOne({
-            username: username
-        })
+        try {
 
-        if (record) {
-            ctx.status = 400;
-            ctx.body = {
-                errors: [
-                    { id: "USER_EXISTS" }
-                ]
-            };
-            return;
+            await ctx.appContext.services.usersService.registerUser({
+                username, password, name
+            })
+
+            ctx.status = 201;
+        } catch (err) {
+            if (err.message === "USER_EXISTS") {
+                ctx.status = 400;
+                ctx.body = {
+                    errors: [
+                        { id: "USER_EXISTS" }
+                    ]
+                };
+            } else {
+                winston.log("error", "Error registering user", err)
+                ctx.status = 500;
+            }
         }
 
-        await collection.insertOne({ username, password, name })
 
-        // const user = await queries.addUser(ctx.request.body);
-
-
-        // passport.authenticate("local", {session: false}, (error, user, info) => {
-
-
-        // })
-
-
-        // passport.authenticate('local',
-        //     {
-        //         session: false
-        //     }, (err, user, info) => {
-
-        //         // if (user) {
-        //         //     ctx.login(user);
-        //         //     ctx.redirect('/auth/status');
-        //         // } else {
-        //         //     ctx.status = 400;
-        //         //     ctx.body = { status: 'error' };
-        //         // }
-
-        //     })(ctx);
-
+        // Login user after registration to return session
+        await passport.authenticate('local', (err, user, info) => {
+            if (user) {
+                ctx.login(user);
+                ctx.status = 200
+            } else {
+                ctx.status = 400;
+                ctx.body = { status: 'error' };
+            }
+        })(ctx, null)
     }
 
     public static async loginUser(ctx: BaseContext): Promise<void> {
@@ -74,10 +62,7 @@ export default class AuthController {
             if (user) {
                 winston.log("info", `inside`);
                 await (ctx as any).login(user);
-
-                // winston.log("info", `inside2`, test);
                 ctx.status = 200;
-                // ctx.body = 'accepted';
             } else {
                 ctx.status = 400;
                 ctx.body = { status: 'error' };

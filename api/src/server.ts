@@ -22,7 +22,10 @@ import {default as PassportLocal} from 'passport-local';
 import {Strategy as JWTStrategy, ExtractJwt } from "passport-jwt";
 import { UsersRepository } from "./repositories/UsersRepository";
 import { configureAuth } from "./utils/auth";
-import { protectedRouter } from "./routes/protectedRoutes";
+import { unAuthenticatedRoutes } from "./routes/UnAuthenticatedRoutes";
+import { authenticatedRoutes } from "./routes/AuthenticatedRoutes";
+import { UsersService } from "./services/UsersService";
+import { LocationsRepository } from "./repositories/LocationsRepository";
 
 
 const connectionOptions: ConnectionOptions = {
@@ -125,7 +128,8 @@ createConnection(connectionOptions)
     // );
 
     // These routes are protected by the JWT middleware, also include middleware to respond with "Method Not Allowed - 405".
-    app.use(protectedRouter.routes()).use(protectedRouter.allowedMethods());
+    app.use(unAuthenticatedRoutes.routes()).use(unAuthenticatedRoutes.allowedMethods());
+    app.use(authenticatedRoutes.routes()).use(authenticatedRoutes.allowedMethods());
 
     // Register cron job to do any action needed
     cron.start();
@@ -147,14 +151,21 @@ const createAppContext = async (): Promise<AppContext> => {
   const db = client.db(dbName);
 
   const usersRepository = new UsersRepository(db);
+  const locationsRepository = new LocationsRepository(db);
 
+  const usersService = new UsersService(usersRepository, locationsRepository)
   return {
     mongo: {
       db,
     },
     repositories: {
-      usersRepository
+      usersRepository,
+      locationsRepository
+    },
+    services: {
+      usersService
     }
+    
   };
 };
 
@@ -167,6 +178,10 @@ type AppContext = {
     db: Db;
   };
   repositories: {
-    usersRepository: UsersRepository
+    usersRepository: UsersRepository,
+    locationsRepository: LocationsRepository
+  }
+  services: {
+    usersService: UsersService
   }
 };

@@ -1,13 +1,13 @@
-import Router from "@koa/router";
-import { general, auth } from "../controllers";
+// import Router from "@koa/router";
+// import { general, auth } from "../controllers";
 
-const unprotectedRouter = new Router();
+// const unprotectedRouter = new Router();
 
-// Hello World route
-unprotectedRouter.get("/", general.helloWorld);
+// // Hello World route
+// unprotectedRouter.get("/", general.helloWorld);
 
 
-// unprotectedRouter.get("/auth/login", auth.login);
-unprotectedRouter.get("/auth/register", auth.register);
+// // unprotectedRouter.get("/auth/login", auth.login);
+// unprotectedRouter.get("/auth/register", auth.register);
 
-export { unprotectedRouter };
+// export { unprotectedRouter };

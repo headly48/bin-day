@@ -1,14 +1,15 @@
 import {default as passport } from 'koa-passport';
 import winston from 'winston';
-import { User, UsersRepository } from '../repositories/UsersRepository';
+import { UserEntity, UsersRepository } from '../repositories/UsersRepository';
 import {Strategy} from 'passport-local';
+import {genSaltSync, hashSync, compareSync} from "bcryptjs";
 
 const options = {};
 
 
 
 export const configureAuth = (userRepository: UsersRepository) => {
-    passport.serializeUser((user: User, done) => { done(null, user.username); });
+    passport.serializeUser((user: UserEntity, done) => { done(null, user.username); });
     
     passport.deserializeUser((username: string, done) => {
         winston.log("info", `deserializeUser: ${username}`);
@@ -30,12 +31,18 @@ export const configureAuth = (userRepository: UsersRepository) => {
     
     passport.use(new Strategy(options, (username: string, password: string, done) => {
         winston.log("info", `Logging in user: ${username}, password: ${password}`);
-        userRepository.getUserByUsernameAndPassword(username, password).then((user) => {
-            winston.log("info", `THEN`, user);
+
+        userRepository.getUserByUsername(username).then((user) => {
             if(user) {
-                done(null, user)
+                if(compareSync(password, user.password)) {
+                    done(null, user)
+                } else {
+
+                    winston.log("info", `Failed to log in user: ${username}, invalid password`);
+                    done(null, false)
+                }
             } else {
-                winston.log("info", `Failed to log in user: ${username}, invalid username or password`);
+                winston.log("info", `Failed to log in user: ${username}, invalid username`);
                 done(null, false)
             }
         }).catch((err) => {
