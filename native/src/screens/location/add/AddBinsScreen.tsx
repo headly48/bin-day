@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Button, ScrollView, Text, View } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { GooglePlaceDetail } from "react-native-google-places-autocomplete";
+import { httpClient } from "../../../utilities/HttpClient";
 
 export const AddBinsScreen = () => {
     const navigation = useNavigation<any>();
@@ -32,7 +33,20 @@ export const AddBinsScreen = () => {
     }, [route.params])
 
 
-    console.log("LOADED BINS")
+    const saveLocation = async () => {
+
+        await httpClient.post("/location", {
+            name: "blah",
+            location: {
+                type: "Point",
+                coordinates: [address?.geometry.location.lat, address?.geometry.location.lng]
+            },
+            address,
+            bins: bins
+        })
+
+        navigation.navigate("Home")
+    }
 
     return (
         <View>
@@ -52,11 +66,7 @@ export const AddBinsScreen = () => {
             </ScrollView>
 
             {(bins && bins.length > 0) && (<View>
-                <Button title="Save Location" onPress={() => {
-                    console.log("Saving location", address, bins)
-
-                    navigation.navigate("Home")
-                }}></Button>
+                <Button title="Save Location" onPress={saveLocation}></Button>
             </View>)}
         </View>
     );

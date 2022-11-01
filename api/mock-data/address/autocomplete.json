@@ -1,0 +1,240 @@
+{
+    "predictions": [
+        {
+            "description": "111 Harrington Street, The Rocks NSW, Australia",
+            "matched_substrings": [
+                {
+                    "length": 3,
+                    "offset": 0
+                }
+            ],
+            "place_id": "ChIJjztItEOuEmsRp-Xu7KZCLt4",
+            "reference": "ChIJjztItEOuEmsRp-Xu7KZCLt4",
+            "structured_formatting": {
+                "main_text": "111 Harrington Street",
+                "main_text_matched_substrings": [
+                    {
+                        "length": 3,
+                        "offset": 0
+                    }
+                ],
+                "secondary_text": "The Rocks NSW, Australia"
+            },
+            "terms": [
+                {
+                    "offset": 0,
+                    "value": "111"
+                },
+                {
+                    "offset": 4,
+                    "value": "Harrington Street"
+                },
+                {
+                    "offset": 23,
+                    "value": "The Rocks"
+                },
+                {
+                    "offset": 33,
+                    "value": "NSW"
+                },
+                {
+                    "offset": 38,
+                    "value": "Australia"
+                }
+            ],
+            "types": [
+                "street_address",
+                "geocode"
+            ]
+        },
+        {
+            "description": "111 Bourke Street, Melbourne VIC, Australia",
+            "matched_substrings": [
+                {
+                    "length": 3,
+                    "offset": 0
+                }
+            ],
+            "place_id": "ChIJy9JEVMhC1moR0r67aGUnXKo",
+            "reference": "ChIJy9JEVMhC1moR0r67aGUnXKo",
+            "structured_formatting": {
+                "main_text": "111 Bourke Street",
+                "main_text_matched_substrings": [
+                    {
+                        "length": 3,
+                        "offset": 0
+                    }
+                ],
+                "secondary_text": "Melbourne VIC, Australia"
+            },
+            "terms": [
+                {
+                    "offset": 0,
+                    "value": "111"
+                },
+                {
+                    "offset": 4,
+                    "value": "Bourke Street"
+                },
+                {
+                    "offset": 19,
+                    "value": "Melbourne"
+                },
+                {
+                    "offset": 29,
+                    "value": "VIC"
+                },
+                {
+                    "offset": 34,
+                    "value": "Australia"
+                }
+            ],
+            "types": [
+                "street_address",
+                "geocode"
+            ]
+        },
+        {
+            "description": "111 Cecil Street, South Melbourne VIC, Australia",
+            "matched_substrings": [
+                {
+                    "length": 3,
+                    "offset": 0
+                }
+            ],
+            "place_id": "ChIJwar08b1n1moRz29BuIR4s3Y",
+            "reference": "ChIJwar08b1n1moRz29BuIR4s3Y",
+            "structured_formatting": {
+                "main_text": "111 Cecil Street",
+                "main_text_matched_substrings": [
+                    {
+                        "length": 3,
+                        "offset": 0
+                    }
+                ],
+                "secondary_text": "South Melbourne VIC, Australia"
+            },
+            "terms": [
+                {
+                    "offset": 0,
+                    "value": "111"
+                },
+                {
+                    "offset": 4,
+                    "value": "Cecil Street"
+                },
+                {
+                    "offset": 18,
+                    "value": "South Melbourne"
+                },
+                {
+                    "offset": 34,
+                    "value": "VIC"
+                },
+                {
+                    "offset": 39,
+                    "value": "Australia"
+                }
+            ],
+            "types": [
+                "street_address",
+                "geocode"
+            ]
+        },
+        {
+            "description": "111 Boundary Street, West End QLD, Australia",
+            "matched_substrings": [
+                {
+                    "length": 3,
+                    "offset": 0
+                }
+            ],
+            "place_id": "ChIJn61BOqFQkWsR6MBjpxRpTl4",
+            "reference": "ChIJn61BOqFQkWsR6MBjpxRpTl4",
+            "structured_formatting": {
+                "main_text": "111 Boundary Street",
+                "main_text_matched_substrings": [
+                    {
+                        "length": 3,
+                        "offset": 0
+                    }
+                ],
+                "secondary_text": "West End QLD, Australia"
+            },
+            "terms": [
+                {
+                    "offset": 0,
+                    "value": "111"
+                },
+                {
+                    "offset": 4,
+                    "value": "Boundary Street"
+                },
+                {
+                    "offset": 21,
+                    "value": "West End"
+                },
+                {
+                    "offset": 30,
+                    "value": "QLD"
+                },
+                {
+                    "offset": 35,
+                    "value": "Australia"
+                }
+            ],
+            "types": [
+                "street_address",
+                "geocode"
+            ]
+        },
+        {
+            "description": "111 Pacific Highway, North Sydney NSW, Australia",
+            "matched_substrings": [
+                {
+                    "length": 3,
+                    "offset": 0
+                }
+            ],
+            "place_id": "ChIJfZ8k5fKuEmsRA8jHYY6X7VA",
+            "reference": "ChIJfZ8k5fKuEmsRA8jHYY6X7VA",
+            "structured_formatting": {
+                "main_text": "111 Pacific Highway",
+                "main_text_matched_substrings": [
+                    {
+                        "length": 3,
+                        "offset": 0
+                    }
+                ],
+                "secondary_text": "North Sydney NSW, Australia"
+            },
+            "terms": [
+                {
+                    "offset": 0,
+                    "value": "111"
+                },
+                {
+                    "offset": 4,
+                    "value": "Pacific Highway"
+                },
+                {
+                    "offset": 21,
+                    "value": "North Sydney"
+                },
+                {
+                    "offset": 34,
+                    "value": "NSW"
+                },
+                {
+                    "offset": 39,
+                    "value": "Australia"
+                }
+            ],
+            "types": [
+                "street_address",
+                "geocode"
+            ]
+        }
+    ],
+    "status": "OK"
+}

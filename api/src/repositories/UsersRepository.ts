@@ -27,6 +27,13 @@ export class UsersRepository {
         });
     }
 
+    async getUserById(id: string): Promise<UserEntity | null> {
+
+        return this.collection.findOne<UserEntity>({
+            _id: new ObjectId(id)
+        });
+    }
+
     async updateUser(user: UserEntity): Promise<UpdateResult> {
         return this.collection.updateOne({
             _id: user._id

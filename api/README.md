@@ -8,7 +8,8 @@ Koa with session + redis
   https://mherman.org/blog/user-authentication-with-passport-and-koa/
 
 
-
+PassportJS with local + JWT
+https://www.permify.co/post/part-1-authentication-system-with-nodejs
 
 
 

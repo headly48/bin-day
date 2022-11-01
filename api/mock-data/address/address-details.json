@@ -1,0 +1,95 @@
+{
+    "html_attributions": [],
+    "result": {
+        "address_components": [
+            {
+                "long_name": "111",
+                "short_name": "111",
+                "types": [
+                    "street_number"
+                ]
+            },
+            {
+                "long_name": "Harrington Street",
+                "short_name": "Harrington St",
+                "types": [
+                    "route"
+                ]
+            },
+            {
+                "long_name": "The Rocks",
+                "short_name": "The Rocks",
+                "types": [
+                    "locality",
+                    "political"
+                ]
+            },
+            {
+                "long_name": "City of Sydney",
+                "short_name": "City of Sydney",
+                "types": [
+                    "administrative_area_level_2",
+                    "political"
+                ]
+            },
+            {
+                "long_name": "New South Wales",
+                "short_name": "NSW",
+                "types": [
+                    "administrative_area_level_1",
+                    "political"
+                ]
+            },
+            {
+                "long_name": "Australia",
+                "short_name": "AU",
+                "types": [
+                    "country",
+                    "political"
+                ]
+            },
+            {
+                "long_name": "2000",
+                "short_name": "2000",
+                "types": [
+                    "postal_code"
+                ]
+            }
+        ],
+        "adr_address": "<span class=\"street-address\">111 Harrington St</span>, <span class=\"locality\">The Rocks</span> <span class=\"region\">NSW</span> <span class=\"postal-code\">2000</span>, <span class=\"country-name\">Australia</span>",
+        "formatted_address": "111 Harrington St, The Rocks NSW 2000, Australia",
+        "geometry": {
+            "location": {
+                "lat": -33.8615828,
+                "lng": 151.2070312
+            },
+            "viewport": {
+                "northeast": {
+                    "lat": -33.86025806970851,
+                    "lng": 151.2084736802915
+                },
+                "southwest": {
+                    "lat": -33.8629560302915,
+                    "lng": 151.2057757197085
+                }
+            }
+        },
+        "icon": "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/geocode-71.png",
+        "icon_background_color": "#7B9EB0",
+        "icon_mask_base_uri": "https://maps.gstatic.com/mapfiles/place_api/icons/v2/generic_pinlet",
+        "name": "111 Harrington St",
+        "place_id": "ChIJjztItEOuEmsRp-Xu7KZCLt4",
+        "plus_code": {
+            "compound_code": "46Q4+9R The Rocks NSW, Australia",
+            "global_code": "4RRH46Q4+9R"
+        },
+        "reference": "ChIJjztItEOuEmsRp-Xu7KZCLt4",
+        "types": [
+            "street_address"
+        ],
+        "url": "https://maps.google.com/?q=111+Harrington+St,+The+Rocks+NSW+2000,+Australia&ftid=0x6b12ae43b4483b8f:0xde2e42a6eceee5a7",
+        "utc_offset": 660,
+        "vicinity": "The Rocks"
+    },
+    "status": "OK"
+}

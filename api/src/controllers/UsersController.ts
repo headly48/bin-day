@@ -23,8 +23,16 @@ export class UsersController {
             }
             )
         }
+    }
 
+    public static async getUser(ctx: RouterContext<any, ServerContext>) {
 
+        const user: UserEntity = ctx.state.user
 
+        ctx.body = {
+            id: user._id,
+            username: user.username
+        };
+        ctx.status = 200;
     }
 }

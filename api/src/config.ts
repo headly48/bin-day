@@ -10,6 +10,9 @@ export interface Config {
     databaseUrl: string;
     dbEntitiesPath: string[];
     cronJobExpression: string;
+    addressSearch: {
+      apiKey: string
+    }
 }
 
 const isDevMode = process.env.NODE_ENV == "development";
@@ -25,7 +28,10 @@ const config: Config = {
     dbEntitiesPath: [
       ... isDevMode ? ["src/entity/**/*.ts"] : ["dist/entity/**/*.js"],
     ],
-    cronJobExpression: "0 * * * *"
+    cronJobExpression: "0 * * * *",
+    addressSearch: {
+      apiKey: process.env.GOOGLE_API_KEY
+    }
 };
 
-export { config };
+export { config, isDevMode };

@@ -3,6 +3,8 @@ import { default as passport } from 'koa-passport';
 import { RouterContext } from "@koa/router";
 import { ServerContext } from "../server";
 import winston from "winston";
+import { getToken } from "../utils/authentication";
+import { UserEntity } from "../repositories/UsersRepository";
 
 export default class AuthenticationController {
 
@@ -39,30 +41,53 @@ export default class AuthenticationController {
                 winston.log("error", "Error registering user", err)
                 ctx.status = 500;
             }
+
+            return;
         }
 
 
         // Login user after registration to return session
-        await passport.authenticate('local', (err, user, info) => {
-            if (user) {
-                ctx.login(user);
-                ctx.status = 200
-            } else {
-                ctx.status = 400;
-                ctx.body = { status: 'error' };
-            }
-        })(ctx, null)
+        return AuthenticationController.loginUser(ctx)
+
+        // passport.authenticate('local', (err, user, info) => {
+        //     if (user) {
+        //         ctx.login(user);
+        //         ctx.status = 200
+        //     } else {
+        //         ctx.status = 400;
+        //         ctx.body = { status: 'error' };
+        //     }
+        // })(ctx, null)
     }
+
+    // public static async loginUser(ctx: BaseContext): Promise<void> {
+
+    //     return passport.authenticate('local', async (err, user, info) => {
+    //         winston.log("info", `Logging in use6r`, user, info);
+
+    //         if (user) {
+    //             winston.log("info", `inside`);
+    //             await (ctx as any).login(user);
+    //             ctx.status = 200;
+    //         } else {
+    //             ctx.status = 400;
+    //             ctx.body = { status: 'error' };
+    //         }
+    //     })(ctx as any, null);
+    // }
 
     public static async loginUser(ctx: BaseContext): Promise<void> {
 
-        return passport.authenticate('local', async (err, user, info) => {
+        return passport.authenticate('local', { session: false }, async (err, user: UserEntity, info) => {
             winston.log("info", `Logging in use6r`, user, info);
 
             if (user) {
                 winston.log("info", `inside`);
                 await (ctx as any).login(user);
                 ctx.status = 200;
+                ctx.body = {
+                    access_token: getToken(user)
+                }
             } else {
                 ctx.status = 400;
                 ctx.body = { status: 'error' };

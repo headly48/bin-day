@@ -21,7 +21,7 @@ import {default as PassportLocal} from 'passport-local';
 
 import {Strategy as JWTStrategy, ExtractJwt } from "passport-jwt";
 import { UsersRepository } from "./repositories/UsersRepository";
-import { configureAuth } from "./utils/auth";
+import { configureAuth } from "./utils/authentication";
 import { unAuthenticatedRoutes } from "./routes/UnAuthenticatedRoutes";
 import { authenticatedRoutes } from "./routes/AuthenticatedRoutes";
 import { UsersService } from "./services/UsersService";
@@ -81,7 +81,7 @@ createConnection(connectionOptions)
     // app.keys = new Keygrip(['64bytes_long_string_1', '64bytes_long_string_2'], 'sha512', 'base64')
 
     app.keys = ['super-secret-key'];
-    app.use(session(app));
+    // app.use(session(app));
 
     // Enable cors with default options
     app.use(cors());
@@ -95,7 +95,7 @@ createConnection(connectionOptions)
     configureAuth(app.context.appContext.repositories.usersRepository);
 
     app.use(passport.initialize());
-    app.use(passport.session());
+    // app.use(passport.session());
 
 
   //   passport.use(new JWTStrategy({
