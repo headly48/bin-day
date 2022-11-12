@@ -80,10 +80,10 @@ export const LoginScreen = () => {
 
             <Button onPress={loginUser} isLoading={loading}>Login</Button>
 
-            <Box w="75%" maxW="300px" height={"container"}>
-                <Link height="2" onPress={() => navigation.navigate('Register')} size={"xl"} color="darkText" _hover={{ cursor: 'pointer' } as any} _text={{
+            <Box w="75%" maxW="300px">
+                {<Link height="2" onPress={() => navigation.navigate('Register')} size={"xl"} color="darkText" _hover={{ cursor: 'pointer' } as any} _text={{
                     fontWeight: "bold"
-                }}>Sign up</Link>
+                }}>Sign up</Link>}
             </Box>
         </Stack>
     </Box>)

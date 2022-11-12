@@ -8,7 +8,7 @@ import { SelectAddressScreen } from './src/screens/location/add/SelectAddressScr
 import { AddBinsScreen } from './src/screens/location/add/AddBinsScreen';
 import { SelectBinColourScreen } from './src/screens/location/add/SelectBinColourScreen';
 import { SelectBinScheduleScreen } from './src/screens/location/add/SelectBinScheduleScreen';
-import { Box, HStack, Icon, IconButton, NativeBaseProvider, Text, StatusBar, VStack, Divider, Pressable } from 'native-base';
+import { Box, HStack, Icon, IconButton, NativeBaseProvider, StatusBar, VStack, Divider, Pressable, Text } from 'native-base';
 // import { useAuthentication } from './src/hooks/useAuthentication';
 import { LoginScreen } from './src/screens/LoginScreen';
 import { AuthenticationContext } from './src/providers/AuthenticationProvider';
@@ -23,7 +23,7 @@ import { RegisterScreen } from './src/screens/RegisterScreen';
 import { handle401Error } from './src/utilities/HttpClient';
 
 // const Stack = createNativeStackNavigator();
-const Drawer = createDrawerNavigator<ParamListBase & {displayInNav?: boolean}>();
+const Drawer = createDrawerNavigator<ParamListBase & { displayInNav?: boolean }>();
 
 function AppBar({ ...props }: any) {
   console.log(props)
@@ -67,7 +67,7 @@ export default function App() {
         <NavigationContainer>
 
           <Box safeArea flex={1}>
-            <Drawer.Navigator
+            {<Drawer.Navigator
               drawerContent={(props) => <DrawerContent {...props} />}
             >
 
@@ -77,7 +77,7 @@ export default function App() {
                     name="Home"
                     component={HomeScreen}
                     options={{ title: 'Bin Day' }}
-                    initialParams={{displayInNav: true}}
+                    initialParams={{ displayInNav: true }}
                   />
 
 
@@ -94,7 +94,6 @@ export default function App() {
                 </Drawer.Group>)
               }
 
-
               {!auth.isAuthenticated &&
                 (<Drawer.Group>
                   <Drawer.Screen
@@ -110,7 +109,8 @@ export default function App() {
                   />
                 </Drawer.Group>)
               }
-            </Drawer.Navigator>
+            </Drawer.Navigator>}
+
           </Box>
 
           {/* <Stack.Navigator screenOptions={{headerTitle: (props) => <AppBar {...props} />}}>
@@ -173,3 +173,25 @@ const styles = StyleSheet.create({
 
 
 
+// {auth.isAuthenticated &&
+//   (<Drawer.Group>
+//     <Drawer.Screen
+//       name="Home"
+//       component={HomeScreen}
+//       options={{ title: 'Bin Day' }}
+//       initialParams={{displayInNav: true}}
+//     />
+
+
+//     <Drawer.Group>
+//       <Drawer.Screen
+//         name="AddLocation"
+//         component={SelectAddressScreen}
+//         options={{ title: 'Select Address' }}
+//       />
+//       <Drawer.Screen name="AddBins" component={AddBinsScreen} options={{ title: "Add Bins" }} />
+//       <Drawer.Screen name="SelectBinColour" component={SelectBinColourScreen} options={{ title: "Bin Colour" }} />
+//       <Drawer.Screen name="SelectBinSchedule" component={SelectBinScheduleScreen} options={{ title: "Bin Schedule" }} />
+//     </Drawer.Group>
+//   </Drawer.Group>)
+// }
