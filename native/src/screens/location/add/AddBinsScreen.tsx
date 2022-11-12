@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { Button, ScrollView, Text, View } from 'react-native';
+import { ScrollView, View } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { GooglePlaceDetail } from "react-native-google-places-autocomplete";
 import { httpClient } from "../../../utilities/HttpClient";
+import { Box, Button, Center, Text } from "native-base";
+import { EmptyBox } from "../../../components/EmptyBox";
+import Icon from "react-native-vector-icons/Ionicons";
 
 export const AddBinsScreen = () => {
     const navigation = useNavigation<any>();
@@ -49,25 +52,29 @@ export const AddBinsScreen = () => {
     }
 
     return (
-        <View>
-            <View>
-                <Text>We were unable to find your bin schedule</Text>
-                <Text>Please add them below</Text>
-            </View>
+        <Box bgColor="#5c9284" height={"full"} p={"12"}>
+            <Center>
+                <EmptyBox heading="Add a bin to get started!">
+                    <Button endIcon={<Icon name="add-outline" color={"white"} size={18} />} onPress={() =>
+                        navigation.navigate('SelectBinColour')
+                    } backgroundColor="#2e495e" color={"#f9b64b"}>Add</Button>
+                </EmptyBox>
 
-            <View>
-                <Button title="Add Bin" onPress={() => {
-                    navigation.navigate("SelectBinColour");
-                }}></Button>
-            </View>
+
+            </Center>
+
+
+
 
             <ScrollView>
                 {bins.map(bin => <View><Text>{JSON.stringify(bin)}</Text></View>)}
             </ScrollView>
 
             {(bins && bins.length > 0) && (<View>
-                <Button title="Save Location" onPress={saveLocation}></Button>
+                <Button onPress={saveLocation}>Save Location</Button>
             </View>)}
-        </View>
+
+        </Box>
+
     );
 };

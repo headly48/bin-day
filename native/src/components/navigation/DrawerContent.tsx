@@ -1,8 +1,10 @@
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { DrawerContentComponentProps, DrawerContentScrollView } from "@react-navigation/drawer";
-import { Box, Pressable, VStack,HStack, Text, Divider, Icon } from "native-base";
+import { Box, Pressable, VStack, HStack, Text, Divider } from "native-base";
 import React from "react";
 import { useAuthenticationContext } from "../../providers/AuthenticationProvider";
+import Icon from "react-native-vector-icons/Ionicons";
+
 
 const getIcon = (screenName) => {
   switch (screenName) {
@@ -23,10 +25,10 @@ const getIcon = (screenName) => {
   }
 };
 
-export const DrawerContent = ({...props}: DrawerContentComponentProps) => {
+export const DrawerContent = ({ ...props }: DrawerContentComponentProps) => {
   const auth = useAuthenticationContext();
-  
-  
+
+
   return (
     <DrawerContentScrollView {...props} safeArea={true}>
       <VStack space="6" my="2" mx="1">
@@ -40,8 +42,13 @@ export const DrawerContent = ({...props}: DrawerContentComponentProps) => {
         </Box>
         <VStack divider={<Divider />} space="4">
           <VStack space="3">
-            {props.state.routeNames.map((name, index) => (
-              <Pressable
+            {props.state.routes.map((route, index) => {
+              let name = route.name;
+              if(!(route.params as any)?.displayInNav) {
+                return null
+              }
+
+              return (<Pressable
                 px="5"
                 py="3"
                 rounded="md"
@@ -71,50 +78,26 @@ export const DrawerContent = ({...props}: DrawerContentComponentProps) => {
                     {name}
                   </Text>
                 </HStack>
-              </Pressable>
-            ))}
+              </Pressable>)
+
+            })}
           </VStack>
           <VStack space="5">
-            <Text fontWeight="500" fontSize="14" px="5" color="gray.500">
-              Labels
-            </Text>
             <VStack space="3">
-              <Pressable px="5" py="3">
+              {auth?.isAuthenticated && <Pressable px="5" py="3" onPress={() => auth.logoutUser(false)}>
                 <HStack space="7" alignItems="center">
                   <Icon
-                    color="gray.500"
-                    size="5"
-                    as={<MaterialCommunityIcons name="bookmark" />}
+                    name="log-out-outline"
+                    color="darkText"
+                    size={25}
                   />
-                  <Text color="gray.700" fontWeight="500">
-                    Family
+                  <Text fontWeight="500" color="darkText">
+                    Logout
                   </Text>
                 </HStack>
-              </Pressable>
-              <Pressable px="5" py="2">
-                <HStack space="7" alignItems="center">
-                  <Icon
-                    color="gray.500"
-                    size="5"
-                    as={<MaterialCommunityIcons name="bookmark" />}
-                  />
-                  <Text color="gray.700" fontWeight="500">
-                    Friends
-                  </Text>
-                </HStack>
-              </Pressable>
-              <Pressable px="5" py="3">
-                <HStack space="7" alignItems="center">
-                  <Icon
-                    color="gray.500"
-                    size="5"
-                    as={<MaterialCommunityIcons name="bookmark" />}
-                  />
-                  <Text fontWeight="500" color="gray.700">
-                    Work
-                  </Text>
-                </HStack>
-              </Pressable>
+              </Pressable>}
+
+
             </VStack>
           </VStack>
         </VStack>

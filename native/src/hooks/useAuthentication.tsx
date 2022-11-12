@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from "react"
 import { Config } from "../../app.config"
 import { httpClient, setAccessToken } from "../utilities/HttpClient"
+import { deleteAccessToken } from "../utilities/HttpClient"
 
 type UserData = {
     username: string,
@@ -50,14 +51,15 @@ export const useAuthentication = () => {
         return httpClient.get(`/user`)
     }, []);
 
-    const registerUser = useCallback(async (username: string, password: string) => {
+    const registerUser = useCallback(async ({username, password, name}: {username: string, password: string, name: string}) => {
         return httpClient.post(`/auth/register`, {
             username,
-            password
+            password,
+            name
         }).then(async (res) => {
             console.log("User registered")
             await setAccessToken(res.data.access_token)
-            
+
             return getUserDetails().then((res) => {
                 setUserData(res.data)
                 setIsAuthenticated(true);
@@ -72,19 +74,22 @@ export const useAuthentication = () => {
 
     const logoutUser = useCallback(async (callApi: boolean = true) => {
 
-        if(!callApi) {
+        if (!callApi) {
+            deleteAccessToken();
             setIsAuthenticated(false)
             setUserData(undefined)
+
             return;
         }
 
         return httpClient.get(`/auth/logout`).finally(() => {
+            deleteAccessToken();
             setIsAuthenticated(false)
             setUserData(undefined)
         });
     }, []);
 
-    
+
     return {
         isAuthenticated,
         loginUser,

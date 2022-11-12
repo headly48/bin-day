@@ -33,9 +33,8 @@ httpClient.interceptors.request.use(async (config: AxiosRequestConfig) => {
 
 httpClient.interceptors.response.use(async (value: AxiosResponse) => {
     if (value.status === 401) {
-        accessToken = null;
-        await deleteFromStorage(ACCESS_TOKEN_KEY)
 
+        await deleteAccessToken();
         on401Error && on401Error();
     }
 
@@ -52,9 +51,15 @@ const handle401Error = (cb: () => void) => {
     on401Error = cb;
 }
 
+const deleteAccessToken = async () => {
+    accessToken = null;
+    await deleteFromStorage(ACCESS_TOKEN_KEY);
+}
+
 export {
     setAccessToken,
-    handle401Error
+    deleteAccessToken,
+    handle401Error,
 }
 
 async function saveToStorage(key: string, value: string) {

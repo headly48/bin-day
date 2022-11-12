@@ -1,7 +1,7 @@
 // import {  } from 'expo-status-bar';
 import React, { useEffect, useState } from 'react';
 import { SafeAreaView, ScrollView, StyleSheet, View, Platform, Alert, Button } from 'react-native';
-import { NavigationContainer } from '@react-navigation/native';
+import { NavigationContainer, ParamListBase } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { HomeScreen } from './src/screens/HomeScreen';
 import { SelectAddressScreen } from './src/screens/location/add/SelectAddressScreen';
@@ -23,7 +23,7 @@ import { RegisterScreen } from './src/screens/RegisterScreen';
 import { handle401Error } from './src/utilities/HttpClient';
 
 // const Stack = createNativeStackNavigator();
-const Drawer = createDrawerNavigator();
+const Drawer = createDrawerNavigator<ParamListBase & {displayInNav?: boolean}>();
 
 function AppBar({ ...props }: any) {
   console.log(props)
@@ -77,6 +77,7 @@ export default function App() {
                     name="Home"
                     component={HomeScreen}
                     options={{ title: 'Bin Day' }}
+                    initialParams={{displayInNav: true}}
                   />
 
 
@@ -105,7 +106,7 @@ export default function App() {
                   <Drawer.Screen
                     name="Register"
                     component={RegisterScreen}
-                    options={{ title: 'Bin Day' }}
+                    options={{ title: 'Bin Day', headerShown: false }}
                   />
                 </Drawer.Group>)
               }

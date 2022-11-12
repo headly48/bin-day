@@ -60,6 +60,6 @@ export class UsersRepository {
         const hashedPassword = hashSync(user.password, salt);
 
 
-        await this.collection.insertOne({ ...user, password: hashedPassword })
+        await this.collection.insertOne({name: user.name, password: hashedPassword, username: user.username })
     }
 }
