@@ -1,36 +1,20 @@
 # bin-day
 
-
-
-Windows - WSL - How to port forward
-https://dev.to/vishnumohanrk/wsl-port-forwarding-2e22
+Project to test out using Koa and React Native
 
 
 
+# Sources:
+Windows - WSL - How to port forward - https://dev.to/vishnumohanrk/wsl-port-forwarding-2e22
 
+        
+Koa Authentication LocalStrategy with JwtStrategy https://medium.com/front-end-weekly/learn-using-jwt-with-passport-authentication-9761539c4314
 
+Koa with session + redis https://mherman.org/blog/user-authentication-with-passport-and-koa/
 
-
-// TODO - Encrypt Google API key
-        - Create key for android
-        - Create key for Ios
-
-
+PassportJS with local + JWT https://www.permify.co/post/part-1-authentication-system-with-nodejs
 
 
 
 
-Native
-
-
-
-Light blue: #2e495e
-Dark blue: #27384d
-
-Light Yellow: #ffd25d
-Dark Yellow: #f9b64b
-
-
-Light Green: #91e0ac
-Dark Green: #6fc287
 
